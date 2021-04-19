@@ -3,44 +3,44 @@
  * copyright © magento, inc. all rights reserved.
  * see copying.txt for license details.
  */
-namespace aht\systemconfigurable\model\system\config\backend;
+namespace AHT\SystemConfigurable\Model\System\Config\Backend;
 
 /**
  * backend for serialized array data
  */
-class shipping extends \magento\framework\app\config\value
+class Shipping extends \Magento\Framework\App\Config\Value
 {
     /**
      * catalog inventory minsaleqty
      *
-     * @var  \aht\systemconfigurable\helper\shipping
+     * @var  \AHT\SystemConfigurable\Helper\Shipping
      */
-    protected $_cataloginventoryminsaleqty = null;
+    protected $_catalogInventoryMinsaleqty = null;
     protected $config;
 
     /**
-     * @param \magento\framework\model\context $context
-     * @param \magento\framework\registry $registry
-     * @param \magento\framework\app\config\scopeconfiginterface $config
-     * @param \magento\framework\app\cache\typelistinterface $cachetypelist
-     * @param \aht\systemconfigurable\helper\shipping $cataloginventoryminsaleqty
-     * @param \magento\framework\model\resourcemodel\abstractresource $resource
-     * @param \magento\framework\data\collection\abstractdb $resourcecollection
+     * @param \Magento\Framework\Model\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
+     * @param \AHT\SystemConfigurable\Helper\Shipping $catalogInventoryMinsaleqty
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
+     * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
      * @param array $data
      */
     public function __construct(
-        \magento\framework\model\context $context,
-        \magento\framework\registry $registry,
-        \magento\framework\app\config\scopeconfiginterface $config,
-        \magento\framework\app\cache\typelistinterface $cachetypelist,
-        \aht\systemconfigurable\helper\shipping $cataloginventoryminsaleqty,
-        \magento\framework\model\resourcemodel\abstractresource $resource = null,
-        \magento\framework\data\collection\abstractdb $resourcecollection = null,
+        \Magento\Framework\Model\Context $context,
+        \Magento\Framework\Registry $registry,
+        \Magento\Framework\App\Config\ScopeConfigInterface $config,
+        \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
+        \AHT\SystemConfigurable\Helper\Shipping $catalogInventoryMinsaleqty,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
-        $this->_cataloginventoryminsaleqty = $cataloginventoryminsaleqty;
+        $this->_catalogInventoryMinsaleqty = $catalogInventoryMinsaleqty;
         $this->config = $config;
-        parent::__construct($context, $registry, $config, $cachetypelist, $resource, $resourcecollection, $data);
+        parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
     }
 
     /**
@@ -48,9 +48,9 @@ class shipping extends \magento\framework\app\config\value
      *
      * @return void
      */
-    protected function _afterload()
+    protected function _afterLoad()
     {
-        $value = $this->getvalue();
+        $value = $this->getValue();
 
         /*echo "<pre>";
         var_dump($value);
@@ -58,7 +58,7 @@ class shipping extends \magento\framework\app\config\value
         /*if (is_array($value)) {
             $this->setvalue(implode('%', $data));
         }*/
-        $value = $this->_cataloginventoryminsaleqty->makearrayfieldvalue($value);
+        $value = $this->_catalogInventoryMinsaleqty->makeArrayFieldValue($value);
         /*if (is_array($value)) {
             $this->setvalue(implode(',', $data));
         }*/
@@ -70,7 +70,7 @@ class shipping extends \magento\framework\app\config\value
        /* echo "<pre>";
         print_r($value);
         die();*/
-        $this->setvalue($value);
+        $this->setValue($value);
        /* echo "<pre>";
         var_dump($this->getvalue());
         die;*/
@@ -81,12 +81,12 @@ class shipping extends \magento\framework\app\config\value
      *
      * @return void
      */
-    public function beforesave()
+    public function beforeSave()
     {
        /* print_r($this->getdata());die;*/
        /* $value = $this->config->getvalue();*/
-       $value = $this->getvalue();
-       unset($value['__empty']);
+       $value = $this->getValue();
+       /*unset($value['__empty']);*/
        /* echo "<pre>";
         var_dump($value);
         die();*/
@@ -110,11 +110,11 @@ class shipping extends \magento\framework\app\config\value
         var_dump($value);
         die();*/
         
-        $value = $this->_cataloginventoryminsaleqty->makestorablearrayfieldvalue($value);
+        $value = $this->_catalogInventoryMinsaleqty->makeStorableArrayFieldValue($value);
         /*echo "<pre>";
         var_dump($value);
         die();*/
-        $this->setvalue($value);
+        $this->setValue($value);
 
         /*echo "<pre>";
         var_dump($this->getvalue());

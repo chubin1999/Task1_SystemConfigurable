@@ -17,7 +17,7 @@
                     <source_model>AHT\SystemConfigurable\Model\Adminhtml\System\Config\Source\Customer\Group</source_model>
                 </field> -->
                 
-                <field id="shipping_method_customer_group" data-validate="{required:true}" translate="label" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1" data-validate="{required:true}">
+                <field id="shipping_method_customer_group" translate="label" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Shipping method with customer group</label>
                     <frontend_model>AHT\SystemConfigurable\Block\Adminhtml\Form\Field\Shipping</frontend_model>
                     <backend_model>AHT\SystemConfigurable\Model\System\Config\Backend\Shipping</backend_model>
