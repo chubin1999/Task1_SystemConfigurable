@@ -117,7 +117,6 @@ class ActiveShippingMethod extends \Magento\Framework\View\Element\Html\Select
                 $this->addOption($shipping['value'][0]['value'], addslashes($shipping['value'][0]['label']));
             }
         }
-         /*$this->setExtraParams('multiple="multiple"');*/
         return parent::_toHtml();
     }
 }

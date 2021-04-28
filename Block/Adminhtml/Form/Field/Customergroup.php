@@ -106,19 +106,6 @@ class Customergroup extends \Magento\Framework\View\Element\Html\Select
     public function _toHtml()
     {
         if (!$this->getOptions()) {
-            /*if ($this->_addGroupAllOption) {
-                $this->addOption(
-                    $this->groupManagement->getAllCustomersGroup()->getId(),
-                    __('ALL GROUPS')
-                );
-            }*/
-            /*if ($this->_addGroupAllOption) {
-                $this->addOption(31,__('-- ALL GROUPS 2--'));
-            }
-            if ($this->_addGroupAllOption) {
-                $this->addOption(31,__('-- ALL GROUPS 3--'));
-            }*/
-
             foreach ($this->_getCustomerGroups() as $groupId => $groupLabel) {
                 $this->addOption($groupId, addslashes($groupLabel));
             }

@@ -53,9 +53,7 @@ class Shipping extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
            );
             $this->_shippingMethod->setClass('shipping_method_select admin__control-select validate-select required-entry');
         }
-        /*echo "<pre>";
-        var_dump($this->_shippingMethod);
-        die('asd');*/
+
         return $this->_shippingMethod;
     }
 
@@ -73,13 +71,6 @@ class Shipping extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
                 'renderer' => $this->_getShipping()
             ]
         );
-       /* $this->addColumn(
-            'min_sale_qty',
-            [
-                'label' => __('Minimum Qty'),
-                'class' => 'required-entry validate-number validate-greater-than-zero admin__control-text'
-            ]
-        );*/
         $this->addColumn(
             'customer_group_id',
             [
@@ -102,14 +93,6 @@ class Shipping extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
     protected function _prepareArrayRow(\Magento\Framework\DataObject $row)
     {
         $optionExtraAttr = [];
-        /*$options = [];*/
-        
-        /*echo "<pre>";
-        print_r($row->getData());
-        die();*/
-
-        /*$optionExtraAttr['option_' . $this->_getGroupRenderer()->calcOptionHash($row->getData('customer_group_id'))] =
-        'selected';*/
 
         $customer = $row->getData('customer_group_id');
         foreach ($customer as $value) {
@@ -120,30 +103,9 @@ class Shipping extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
         $optionExtraAttr['option_' . $this->_getShipping()->calcOptionHash($row->getData('shipment_id'))] =
         'selected="selected"';
 
-
-        /*$customerGroup = $row->getData('shipment_id');
-        $optionExtraAttr['option_' . $this->_getGroupRenderer()->calcOptionHash($customerGroup)] = 'selected="selected"';*/
-
-        /*$countries = $row->getCountry();
-        if (count($countries) > 0) {
-            foreach ($countries as $country) {
-                $options['option_' . $this->getCountryRenderer()->calcOptionHash($country)]
-                = 'selected="selected"';
-            }
-        }*/
-/*
-        $customer = $row->getData('customer_group_id');
-        foreach ($customer as $value) {
-            $options['option_' . $this->_getGroupRenderer()->calcOptionHash($value)]
-            = 'selected="selected"';
-        }*/
-
         $row->setData(
             'option_extra_attrs',
             $optionExtraAttr
         );
-        /*print_r($row->getData());
-        die;*/
-
     }
 }

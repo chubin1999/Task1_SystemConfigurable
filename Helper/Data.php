@@ -43,11 +43,4 @@ class Data
 			\Magento\Store\Model\ScopeInterface::SCOPE_STORE
 		);
 	}
-
-	public function getShippingMethodByCustomerGroup()
-	{
-		$a = "abc";
-		return $a; 
-	}
-
 }

@@ -47,6 +47,8 @@ class ShippingMethod extends ShippingMethodManagement
 
     protected $_shippingInventory;
 
+    protected $_getConfig;
+
     public function __construct(
         \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
         \Magento\Quote\Model\Cart\ShippingMethodConverter $converter,
@@ -56,7 +58,8 @@ class ShippingMethod extends ShippingMethodManagement
         QuoteAddressResource $quoteAddressResource = null,
         CustomerSession $customerSession = null,
         Data $data,
-        Shipping $shippingInventory
+        Shipping $shippingInventory,
+        \AHT\SystemConfigurable\Helper\Data $getConfig
     ) {
         $this->quoteRepository = $quoteRepository;
         $this->converter = $converter;
@@ -69,23 +72,17 @@ class ShippingMethod extends ShippingMethodManagement
         $this->quoteAddressResource = $quoteAddressResource ?: ObjectManager::getInstance()
         ->get(QuoteAddressResource::class);
         $this->customerSession = $customerSession ?? ObjectManager::getInstance()->get(CustomerSession::class);
+        $this->_getConfig = $getConfig;
     }
     /**
      * @inheritdoc
      */
     public function estimateByExtendedAddress($cartId, AddressInterface $address)
     {
-      /*  $a = $this->data->getCustomerGroup();*/
-        /*$b = $this->_objectManager->create('AHT\SystemConfigurable\Helper\Data')->getConfig('shippingmethod/shippingmethod/shipping_method_customer_group');
-        $value = $this->_shippingInventory->makeArrayFieldValue($b);*/
-        /*echo "<pre>";
-        print_r($a);
-        echo "<br>";
-        print_r($value);
-        die('die');*/
 
         /** @var \Magento\Quote\Model\Quote $quote */
         $quote = $this->quoteRepository->getActive($cartId);
+
 
         // no methods applicable for empty carts or carts with virtual products
         if ($quote->isVirtual() || 0 == $quote->getItemsCount()) {
@@ -114,9 +111,6 @@ class ShippingMethod extends ShippingMethodManagement
             $quote->setCustomerGroupId($customerGroupId);
         }
         $shippingRates = $shippingAddress->getGroupedAllShippingRates();
-        /*echo "<pre>";
-        print_r($shippingRates);
-        die('asd');*/
         foreach ($shippingRates as $carrierRates) {
             foreach ($carrierRates as $rate) {
                 $output[] = $this->converter->modelToDataObject($rate, $quote->getQuoteCurrencyCode());
@@ -124,10 +118,36 @@ class ShippingMethod extends ShippingMethodManagement
         }
         if ($isCustomerGroupChanged) {
             $quote->setCustomerGroupId($quoteCustomerGroupId);
+        }        
+        
+        $dataConfig = $this->_getConfig->getConfig('shippingmethod/shippingmethod/shipping_method_customer_group');
+        $dataConfigArray = $this->_shippingInventory->makeArrayFieldValue($dataConfig);
+
+        //Get shipping method by customergroup
+        foreach ($output as $key => $outp) {
+            /*getCarrierCode: getName1
+              getMethodCode: getName2
+            */
+            $idShippingMethod = $outp->getCarrierCode()."_".$outp->getMethodCode();
+            
+            $checkTablerate = false;
+
+            foreach ($dataConfigArray  as $dataC) {
+                if ($dataC['shipment_id'] == $idShippingMethod) {
+                    foreach ($dataC['customer_group_id'] as $customerId) {
+                        if ($quoteCustomerGroupId == $customerId) {
+                         $checkTablerate = true;
+                         break 2;
+                        }
+                    }
+                }
+
+            }
+            if (!$checkTablerate) {
+            unset($output[$key]);
+            }
         }
-        /*$checkData = $output->getData();
-        print_r($checkData);*/
-        /*die('asd');*/
+
         return $output;
     }
 
